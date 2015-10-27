@@ -1,0 +1,21 @@
+{
+  "variables": {
+    "sn": "Visual Studio Ultimate with MSDN",
+    "ps": "C:/Users/jbann/Documents/Visual Studio Ultimate with MSDN-9-2-2015-credentials.publishsettings",
+    "sa": "sccmlabstorage001"
+  },
+  "builders": [
+    {
+      "type": "azure",
+      "publish_settings_path": "{{user `ps`}}",
+      "subscription_name": "{{user `sn`}}",
+      "storage_account": "{{user `sa`}}",
+      "storage_account_container": "images",
+      "os_type": "Windows",
+      "os_image_label": "Windows 10 Enterprise (x64)",
+      "location": "Australia Southeast",
+      "instance_size": "Large",
+      "user_image_label": "PackerMaster_Windows10x64"
+    }
+  ]
+}
