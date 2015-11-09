@@ -7,7 +7,79 @@
       "metadata": {
         "description": "Base URL for all shared resource templates."
       }
-    }
+    },
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "Azure region"
+      }
+    },
+    "newStorageAccountName": {
+      "type": "string",
+      "metadata": {
+        "description": "Unique DNS Name for the Storage Account where the Virtual Machine's disks will be placed."
+      }
+    },
+    "nicName": {
+      "type": "string",
+      "metadata": {
+        "description": "Network interface object bound to the virtual machine."
+      }
+    },
+    "vmSize": {
+      "type": "string",
+      "metadata": {
+        "description": "Instance size of Azure virtual machine."
+      }
+    },
+    "vmName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the virtual machine"
+      }
+    },
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "User name for the Virtual Machine."
+      }
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Password for the Virtual Machine."
+      }
+    },
+    "imagePublisher": {
+      "type": "string",
+      "metadata": {
+        "description": "Publisher of the operating system image"
+      }
+    },
+    "imageOffer": {
+      "type": "string",
+      "metadata": {
+        "description": "Type of operating system image."
+      }
+    },
+    "WindowsServerEdition": {
+      "type": "string",
+      "metadata": {
+        "description": "Specific edition of Windows Server."
+      }
+    },
+    "vmStorageAccountContainerName": {
+      "type": "string",
+      "metadata": {
+        "description": "Storage container to house virtual machine disks."
+      }
+    },
+    "OSDiskName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the OS disk - unique to storage account."
+      }
+    },
   },
   "resources": [
     {
