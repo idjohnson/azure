@@ -1,0 +1,78 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "newStorageAccountName": {
+      "value": "chefdemostoragefneaut"
+    },
+    "adminUsername": {
+      "value": "chef"
+    },
+    "dnsNameForPublicIP": {
+      "value": "steam-chef-win-2"
+    },
+    "runlist": {
+      "value": "role[all-nodes]"
+    },
+    "chef_server_url": {
+      "value": "https://chef-demo.steamdriven.net/organizations/chefdemo"
+    },
+    "validation_client_name": {
+      "value": "chefdemo-validator"
+    },
+    "virtualNetworkName": {
+      "value": "chef-demo-vnet"
+    },
+    "vmName": {
+      "value": "win-client-2"
+    },
+    "location": {
+      "value": "West US"
+    },
+    "imagePublisher": {
+      "value": "MicrosoftWindowsServer"
+    },
+    "imageOffer": {
+      "value": "WindowsServer"
+    },
+    "WindowsServerEdition": {
+      "value": "2012-R2-Datacenter"
+    },
+    "OSDiskName": {
+      "value": "winclient2osdisk"
+    },
+    "nicName": {
+      "value": "winclient2Nic"
+    },
+    "addressPrefix": {
+      "value": "10.0.0.0/16"
+    },
+    "subnetName": {
+      "value": "Subnet"
+    },
+    "subnetPrefix": {
+      "value": "10.0.0.0/24"
+    },
+    "storageAccountType": {
+      "value": "Standard_LRS"
+    },
+    "publicIPAddressName": {
+      "value": "windowsPublicIP2"
+    },
+    "publicIPAddressType": {
+      "value": "Dynamic"
+    },
+    "vmStorageAccountContainerName": {
+      "value": "vhds"
+    },
+    "vmSize": {
+      "value": "Standard_D2"
+    },
+    "type": {
+      "value": "ChefClient"
+    },
+    "typeHandlerVersion": {
+      "value": "1210.12"
+    }
+  }
+}

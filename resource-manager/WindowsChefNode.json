@@ -31,44 +31,162 @@
       "metadata": {
         "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
       }
+    },
+    "vmName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the virtual machine"
+      }
+    },
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "Azure region"
+      }
+    },
+    "imagePublisher": {
+      "type": "string",
+      "metadata": {
+        "description": "Publisher of the operating system image"
+      }
+    },
+    "imageOffer": {
+      "type": "string",
+      "metadata": {
+        "description": "Type of operating system image."
+      }
+    },
+    "WindowsServerEdition": {
+      "type": "string",
+      "metadata": {
+        "description": "Specific edition of Windows Server."
+      }
+    },
+    "OSDiskName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the OS disk - unique to storage account."
+      }
+    },
+    "nicName": {
+      "type": "string",
+      "metadata": {
+        "description": "Network interface object bound to the virtual machine."
+      }
+    },
+    "addressPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "IP range of the virtual network."
+      }
+    },
+    "subnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the subnet defined by subnetPrefix variable."
+      }
+    },
+    "subnetPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "IP range of the subnet defined by subnetName."
+      }
+    },
+    "storageAccountType": {
+      "type": "string",
+      "metadata": {
+        "description": "Storage account replication type."
+      }
+    },
+    "publicIPAddressName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the public IP address object bound to nicName"
+      }
+    },
+    "publicIPAddressType": {
+      "type": "string",
+      "metadata": {
+        "description": "Type of public IP - static/dynamic."
+      }
+    },
+    "vmStorageAccountContainerName": {
+      "type": "string",
+      "metadata": {
+        "description": "Storage container to house virtual machine disks."
+      }
+    },
+    "vmSize": {
+      "type": "string",
+      "metadata": {
+        "description": "Instance size of Azure virtual machine."
+      }
+    },
+    "type": {
+      "type": "string",
+      "metadata": {
+        "description": "Type of Chef VM Extension."
+      }
+    },
+    "typeHandlerVersion": {
+      "type": "string",
+      "metadata": {
+        "description": "Version of Chef VM Extension."
+      }
+    },
+    "chef_server_url": {
+      "type": "string",
+      "metadata": {
+        "description": "URL of the Chef Server."
+      }
+    },
+    "validation_client_name": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Chef validation client."
+      }
+    },
+    "runlist": {
+      "type": "string",
+      "metadata": {
+        "description": "Initial runlist for the Chef client."
+      }
+    },
+    "validation_key": {
+      "type": "string",
+      "metadata": {
+        "description": "Location of the validation certificate."
+      }
+    },
+    "client_rb": {
+      "type": "string",
+      "metadata": {
+        "description": "JSON escaped string value of the client.rb file to pass"
+      }
     }
   },
   "variables": {
-    "location": "West US",
-    "imagePublisher": "MicrosoftWindowsServer",
-    "imageOffer": "WindowsServer",
-    "WindowsServerEdition": "2012-R2-Datacenter",
-    "OSDiskName": "winclientosdisk",
-    "nicName": "winclientNic",
-    "addressPrefix": "10.0.0.0/16",
-    "subnetName": "Subnet",
-    "subnetPrefix": "10.0.0.0/24",
-    "storageAccountType": "Standard_LRS",
-    "publicIPAddressName": "windowsPublicIP",
-    "publicIPAddressType": "Dynamic",
-    "vmStorageAccountContainerName": "vhds",
-    "vmName": "windows-client",
-    "vmSize": "Standard_D2",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
-    "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]"
+    "subnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('subnetName'))]",
+    "publisher": "Chef.Bootstrap.WindowsAzure"
 },
   "resources": [
     {
       "type": "Microsoft.Storage/storageAccounts",
       "name": "[parameters('newStorageAccountName')]",
       "apiVersion": "2015-05-01-preview",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "properties": {
-        "accountType": "[variables('storageAccountType')]"
+        "accountType": "[parameters('storageAccountType')]"
       }
     },
     {
       "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[variables('publicIPAddressName')]",
-      "location": "[variables('location')]",
+      "name": "[parameters('publicIPAddressName')]",
+      "location": "[parameters('location')]",
       "properties": {
-        "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
+        "publicIPAllocationMethod": "[parameters('publicIPAddressType')]",
         "dnsSettings": {
           "domainNameLabel": "[parameters('dnsNameForPublicIP')]"
         }
@@ -78,18 +196,18 @@
       "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[parameters('virtualNetworkName')]",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
-            "[variables('addressPrefix')]"
+            "[parameters('addressPrefix')]"
           ]
         },
         "subnets": [
           {
-            "name": "[variables('subnetName')]",
+            "name": "[parameters('subnetName')]",
             "properties": {
-              "addressPrefix": "[variables('subnetPrefix')]"
+              "addressPrefix": "[parameters('subnetPrefix')]"
             }
           }
         ]
@@ -98,10 +216,10 @@
     {
       "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('nicName')]",
-      "location": "[variables('location')]",
+      "name": "[parameters('nicName')]",
+      "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
+        "[concat('Microsoft.Network/publicIPAddresses/', parameters('publicIPAddressName'))]",
         "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]"
       ],
       "properties": {
@@ -111,7 +229,7 @@
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIPAddressName'))]"
               },
               "subnet": {
                 "id": "[variables('subnetRef')]"
@@ -124,32 +242,32 @@
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[variables('vmName')]",
-      "location": "[variables('location')]",
+      "name": "[parameters('vmName')]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
-        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
+        "[concat('Microsoft.Network/networkInterfaces/', parameters('nicName'))]"
       ],
       "properties": {
         "hardwareProfile": {
-          "vmSize": "[variables('vmSize')]"
+          "vmSize": "[parameters('vmSize')]"
         },
         "osProfile": {
-          "computername": "[variables('vmName')]",
+          "computername": "[parameters('vmName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "[variables('imagePublisher')]",
-            "offer": "[variables('imageOffer')]",
-            "sku": "[variables('WindowsServerEdition')]",
+            "publisher": "[parameters('imagePublisher')]",
+            "offer": "[parameters('imageOffer')]",
+            "sku": "[parameters('WindowsServerEdition')]",
             "version": "latest"
           },
           "osDisk": {
             "name": "osdisk",
             "vhd": {
-              "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskName'),'.vhd')]"
+              "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/',parameters('vmStorageAccountContainerName'),'/',parameters('OSDiskName'),'.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
@@ -158,7 +276,7 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',parameters('nicName'))]"
             }
           ]
         },
@@ -167,6 +285,33 @@
              "enabled": "true",
              "storageUri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net')]"
           }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(parameters('vmName'),'/', 'chefExtension')]",
+      "apiVersion": "2015-05-01-preview",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
+      ],
+      "properties": {
+        "publisher": "[variables('publisher')]",
+        "type": "[parameters('type')]",
+        "typeHandlerVersion": "[parameters('typeHandlerVersion')]",
+        "settings": {
+          "bootstrap_options":
+          {
+            "chef_node_name" : "[parameters('vmName')]",
+            "chef_server_url" : "[parameters('chef_server_url')]",
+            "validation_client_name" : "[parameters('validation_client_name')]",
+          },
+          "client_rb": "[parameters('client_rb')]",
+          "runlist": "[parameters('runlist')]"
+        },
+        "protectedSettings": {
+          "validation_key": "[parameters('validation_key')]"
         }
       }
     }
