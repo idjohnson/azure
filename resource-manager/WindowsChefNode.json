@@ -155,7 +155,7 @@
     "validation_key": {
       "type": "string",
       "metadata": {
-        "description": "Location of the validation certificate."
+        "description": "Chef organization validation key."
       }
     },
     "client_rb": {

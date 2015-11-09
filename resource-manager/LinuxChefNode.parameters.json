@@ -11,46 +11,8 @@
     "dnsNameForPublicIP": {
       "value": "steamdriven-cheflab-linux-2"
     },
-    "client_rb": {
-      "value":
-"log_level        :info
-log_location     STDOUT
-chef_server_url  'https://chef-demo.steamdriven.net/organizations/chefdemo'
-validation_client_name 'chefdemo-validator'
-ssl_verify_mode :verify_none"
-    },
     "runlist": {
       "value": "role[all-nodes]"
-    },
-    "validation_key": {
-      "value":
-"-----BEGIN RSA PRIVATE KEY-----
-MIIEowIBAAKCAQEAwP10Hi6lTChNFqxzjdEfeyhbeLrq1hD6Xsc9UlhZH8iyQVmN
-6iZBhFt5xtSsCPjYK2VIqH2CwrxvHcfgKUKzYvA6f3nOjw1cMJI0FdH/VCarnPqT
-HuepoFVXT/zIRNPTG1AIkjysoz7vKnYNlO0hJkvGP5EU1UP6UJtAkRH2sZPrayaH
-k43c3IhkFO5P222uEJFuxAJJnrNk3OofMNwE34U0MbaXchJa6wNBvuM+/YuBMGo6
-NEp2ugOPlZdC9LAus44EmxkGzUQddjrS7mzEhBmcwUlb8a+GUG9Ff9Yv9J9wsiEx
-eolAXZyrBkNBqcMu5CVMUADNpA7hraakEqNBVwIDAQABAoIBABMYAGkMDGaghh/8
-J+KcEhVJROOI+rr7Kwo9hB+lhgvS+2/jwFquNkU2F7JIUE0C8cA5YRrqcAl8QzIb
-GF58rurXAbKjBoC4vapAjM6r3CsjOE9rqyqfmPS3/M95HwdQPc6x+GcfgaUVEOyO
-iYF2hJUZYh/f5sPC2f0nnxe7Q0EGSRdaev1w8CY/8pCFC3b1mrpFSGlBkm4XuSac
-W7kNG1bMZfUDk8H/7vVgbXr0SF2SHqQuqwwGOkfO/K+C+N9g3T4aBRrNcwp8T6Bf
-2y5W0KMU2vtjGJtlH7AB4n/qlfqN1IOqTGPbrMn0+8QxA1VObtena6htl8+a8JLJ
-gvTnMeECgYEA/4PmXNFLU75Akx3Nb/x3j9fNAupuZ+NNCRlNW2tQKddH+MzGEePO
-UL25rIL9CaEXzvPyuKBFYncG/nWi2j07/fu1bOJQM+P7NxiUoPLYTDOnGjOPXkXT
-IEMdHhPhQuSVrxqF7tRA4pk2AAzmInwb30NcqO/yRCIO6BGcmFjw+lMCgYEAwVsv
-pms+rrytfT7XwTufWXMKwD2gDfcC5Okjs0qlbKUSPviKeGKwp+T7I2STKmQXncXP
-0WIQhE9BPuduJ9+oH7PtT/2KNkADK6s2Pg5z0ci6merST9phkUeIsqRzqrAvEFa+
-yrKZMw/6a3DiRe/Vk+2a3dBzmeKK8aUd4DM3JG0CgYB9GcA024gM9U46eVH3LV4A
-gEDw14S8uo4iEVBNnSn/glbLmr6zTZza7Tk2HF/1UfkNK2VAPcAa6Hn1JfVY8rgn
-rxBxwhBQh6Ocox1J+/wouvVqn6nnFzq6RgHAky0sCiy7Mbo3Z5ZpG2hT9/zJD4i5
-9Aou8GPmNeKkftLzyEAb3wKBgQCO4cBTfRqj619UlxS+gT2ezwlZx/A3gZoM6E9u
-VTHrGAxkpitFDMC4QNhobhDmGXLuLtgERTApZZu0TTa0lmzZiI9MNfJlZmYxZeK+
-dtWVZ3yk8saZJapFvhPA1w92SZ1tuHxisxnMhvkpXhCHV9R+7O0tDrXuOF8udDKg
-k5gi/QKBgA8HuB6pnGBuRHrnDSfDPaBLfbOsYoQ7m6CavccF+jOhqxD8qPrtfGeP
-pZSSPL/JC7wC/ld9luHGIf3Zr6tL2XQsAbuOMVDRobRSf2+47A44dV8Iu81jMxEI
-lIpw2plOH08u+haw7+fOIgKTmm0RZEcOiCYC+t6MrRrYKm4zfs98
------END RSA PRIVATE KEY-----"
     },
     "chef_server_url": {
       "value": "https://chef-demo.steamdriven.net/organizations/chefdemo"
