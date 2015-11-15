@@ -266,14 +266,14 @@
           "uri": "[concat(parameters('templateBaseUrl'),variables('resourceNetworkInterface'))]",
           "contentVersion": "1.0.0.0"
         },
-      },
-      "parameters": {
-        "nicName": { "value": "[parameters('nicName')]" },
-        "location": { "value": "[resourceGroup().location]" },
-        "publicIPAddressName": { "value": "[parameters('publicIPAddressName')]"},
-        "virtualNetworkName": { "value": "[parameters('virtualNetworkName')]"},
-        "privateIPAllocationMethod": { "value": "[parameters('privateIPAllocationMethod')]" },
-        "subnetRef": { "value": "[parameters('subnetRef')]"}
+        "parameters": {
+          "nicName": { "value": "[parameters('nicName')]" },
+          "location": { "value": "[resourceGroup().location]" },
+          "publicIPAddressName": { "value": "[parameters('publicIPAddressName')]"},
+          "virtualNetworkName": { "value": "[parameters('virtualNetworkName')]"},
+          "privateIPAllocationMethod": { "value": "[parameters('privateIPAllocationMethod')]" },
+          "subnetRef": { "value": "[parameters('subnetRef')]"}
+        }
       }
     },
     {
@@ -290,21 +290,21 @@
           "uri": "[concat(parameters('templateBaseUrl'),parameters('resourceVirtualMachine'))]",
           "contentVersion": "1.0.0.0"
         },
-      },
-      "parameters": {
-        "vmName": { "value": "[parameters('vmName')]"},
-        "location": { "value": "[resourceGroup().location]" },
-        "newStorageAccountName": { "value": "[parameters('newStorageAccountName')]"},
-        "nicName": { "value": "[parameters('nicname')]" },
-        "vmSize": { "value": "[parameters('vmSize')]" },
-        "vmName": { "value": "[parameters('vmName')]" },
-        "adminUsername": { "value": "[parameters('adminUsername')]" },
-        "adminPassword": { "value": "[parameters('adminPassword')]" },
-        "imagePublisher": { "value": "[parameters('imagePublisher')]" },
-        "imageOffer": { "value": "[parameters('imageOffer')]" },
-        "WindowsServerEdition": { "value": "[parameters('WindowsServerEdition')]" },
-        "vmStorageAccountContainerName": { "value": "[parameters('vmStorageAccountContainerName')]" },
-        "OSDiskName": { "value": "[parameters('OSDiskName')]" }
+        "parameters": {
+          "vmName": { "value": "[parameters('vmName')]"},
+          "location": { "value": "[resourceGroup().location]" },
+          "newStorageAccountName": { "value": "[parameters('newStorageAccountName')]"},
+          "nicName": { "value": "[parameters('nicname')]" },
+          "vmSize": { "value": "[parameters('vmSize')]" },
+          "vmName": { "value": "[parameters('vmName')]" },
+          "adminUsername": { "value": "[parameters('adminUsername')]" },
+          "adminPassword": { "value": "[parameters('adminPassword')]" },
+          "imagePublisher": { "value": "[parameters('imagePublisher')]" },
+          "imageOffer": { "value": "[parameters('imageOffer')]" },
+          "WindowsServerEdition": { "value": "[parameters('WindowsServerEdition')]" },
+          "vmStorageAccountContainerName": { "value": "[parameters('vmStorageAccountContainerName')]" },
+          "OSDiskName": { "value": "[parameters('OSDiskName')]" }
+        }
       }
     },
     {
@@ -320,18 +320,18 @@
           "uri": "[concat(variables('templateBaseUrl'),variables('resourceVMExtensionChef'))]",
           "contentVersion": "1.0.0.0"
         },
-      },
-      "parameters": {
-        "vmName": { "value": "[parameters('vmName')]" },
-        "location": { "value": "[resourceGroup().location]" },
-        "publisher": { "value": "[parameters('publisher')]" },
-        "type": { "value": "[parameters('type')]" },
-        "typeHandlerVersion": { "value": "[parameters('typeHandlerVersion')]" },
-        "chef_server_url": { "value": "[parameters('chef_server_url')]" },
-        "validation_client_name": { "value": "[parameters('validation_client_name')]" },
-        "client_rb": { "value": "[parameters('client_rb')]" },
-        "runlist": { "value": "[parameters('runlist')]" },
-        "validation_key": { "value": "[parameters('validation_key')]" }
+        "parameters": {
+          "vmName": { "value": "[parameters('vmName')]" },
+          "location": { "value": "[resourceGroup().location]" },
+          "publisher": { "value": "[parameters('publisher')]" },
+          "type": { "value": "[parameters('type')]" },
+          "typeHandlerVersion": { "value": "[parameters('typeHandlerVersion')]" },
+          "chef_server_url": { "value": "[parameters('chef_server_url')]" },
+          "validation_client_name": { "value": "[parameters('validation_client_name')]" },
+          "client_rb": { "value": "[parameters('client_rb')]" },
+          "runlist": { "value": "[parameters('runlist')]" },
+          "validation_key": { "value": "[parameters('validation_key')]" }
+        }
       }
     }
   ]
