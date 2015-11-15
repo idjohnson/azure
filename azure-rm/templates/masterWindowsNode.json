@@ -209,10 +209,10 @@
           "uri": "[concat(variables('templateBaseUrl'),variables('resourceStorageAccount'))]",
           "contentVersion": "1.0.0.0"
         },
-      },
-      "parameters": {
-        "newStorageAccountName": { "value": "[parameters('storageblobname')]" },
-        "location": { "value": "[resourceGroup().location]" }
+        "parameters": {
+          "newStorageAccountName": { "value": "[parameters('storageblobname')]" },
+          "location": { "value": "[resourceGroup().location]" }
+        }
       }
     },
     {
