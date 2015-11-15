@@ -1,0 +1,66 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "vmName": {
+        "type:": "string"
+      },
+      "location": {
+        "type": "string"
+      },
+      "publisher": {
+        "type": "string"
+      },
+      "type": {
+        "type": "string"
+      },
+      "typeHandlerVersion": {
+        "type": "string"
+      },
+      "chef_server_url": {
+        "type": "string"
+      },
+      "validation_client_name": {
+        "type": "string"
+      },
+      "client_rb": {
+        "type": "string"
+      },
+      "runlist": {
+        "type": "string"
+      },
+      "validation_key": {
+        "type": "securestring"
+      }
+    },
+    "resources": [
+      {
+        "apiVersion": "2015-05-01-preview",
+        "type": "Microsoft.Compute/virtualMachines/extensions",
+        "name": "[concat(parameters('vmName'),'/', 'chefExtension')]",
+
+        "location": "[parameters('location')]",
+        "dependsOn": [
+          "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
+        ],
+        "properties": {
+          "publisher": "[variables('publisher')]",
+          "type": "[parameters('type')]",
+          "typeHandlerVersion": "[parameters('typeHandlerVersion')]",
+          "settings": {
+            "bootstrap_options":
+            {
+              "chef_node_name" : "[parameters('vmName')]",
+              "chef_server_url" : "[parameters('chef_server_url')]",
+              "validation_client_name" : "[parameters('validation_client_name')]",
+            },
+            "client_rb": "[parameters('client_rb')]",
+            "runlist": "[parameters('runlist')]"
+          },
+          "protectedSettings": {
+            "validation_key": "[parameters('validation_key')]"
+          }
+        }
+      }
+    ]
+}

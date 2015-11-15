@@ -1,0 +1,338 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "templateBaseUrl": {
+      "type": "string",
+      "defaultValue": "https://raw.githubusercontent.com/jamesbannan/azure/master/azure-rm/templates/"
+    },
+    "resourceStorageAccount": {
+      "type": "string",
+      "defaultValue": "resourceStorageAccount.json"
+    },
+    "resourceVirtualNetwork": {
+      "type": "string",
+      "defaultValue": "resourceVirtualNetwork.json"
+    },
+    "resourcePublicIPAddress": {
+      "type": "string",
+      "defaultValue": "resourcePublicIPAddress.json"
+    },
+    "resourceNetworkInterface": {
+      "type": "string",
+      "defaultValue": "resourceNetworkInterface.json"
+    },
+    "resourceVirtualMachine": {
+      "type": "string",
+      "defaultValue": "resourceVirtualMachine.json"
+    },
+    "resourceVMExtensionChef": {
+      "type": "string",
+      "defaultValue": "resourceVMExtensionChef.json"
+    },
+    "newStorageAccountName": {
+      "type": "string",
+      "metadata": {
+        "description": "Unique DNS Name for the Storage Account where the Virtual Machine's disks will be placed."
+      }
+    },
+    "virtualNetworkName": {
+      "type": "string",
+      "metadata": {
+        "description": "Existing virtual network."
+      }
+    },
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "User name for the Virtual Machine."
+      }
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Password for the Virtual Machine."
+      }
+    },
+    "dnsNameForPublicIP": {
+      "type": "string",
+      "metadata": {
+        "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
+      }
+    },
+    "vmName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the virtual machine"
+      }
+    },
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "Azure region"
+      }
+    },
+    "imagePublisher": {
+      "type": "string",
+      "metadata": {
+        "description": "Publisher of the operating system image"
+      }
+    },
+    "imageOffer": {
+      "type": "string",
+      "metadata": {
+        "description": "Type of operating system image."
+      }
+    },
+    "WindowsServerEdition": {
+      "type": "string",
+      "metadata": {
+        "description": "Specific edition of Windows Server."
+      }
+    },
+    "OSDiskName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the OS disk - unique to storage account."
+      }
+    },
+    "nicName": {
+      "type": "string",
+      "metadata": {
+        "description": "Network interface object bound to the virtual machine."
+      }
+    },
+    "addressPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "IP range of the virtual network."
+      }
+    },
+    "subnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the subnet defined by subnetPrefix variable."
+      }
+    },
+    "subnetPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "IP range of the subnet defined by subnetName."
+      }
+    },
+    "storageAccountType": {
+      "type": "string",
+      "metadata": {
+        "description": "Storage account replication type."
+      }
+    },
+    "publicIPAddressName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the public IP address object bound to nicName"
+      }
+    },
+    "publicIPAddressType": {
+      "type": "string",
+      "metadata": {
+        "description": "Type of public IP - static/dynamic."
+      }
+    },
+    "vmStorageAccountContainerName": {
+      "type": "string",
+      "metadata": {
+        "description": "Storage container to house virtual machine disks."
+      }
+    },
+    "vmSize": {
+      "type": "string",
+      "metadata": {
+        "description": "Instance size of Azure virtual machine."
+      }
+    },
+    "type": {
+      "type": "string",
+      "metadata": {
+        "description": "Type of Chef VM Extension."
+      }
+    },
+    "typeHandlerVersion": {
+      "type": "string",
+      "metadata": {
+        "description": "Version of Chef VM Extension."
+      }
+    },
+    "chef_server_url": {
+      "type": "string",
+      "metadata": {
+        "description": "URL of the Chef Server."
+      }
+    },
+    "validation_client_name": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Chef validation client."
+      }
+    },
+    "runlist": {
+      "type": "string",
+      "metadata": {
+        "description": "Initial runlist for the Chef client."
+      }
+    },
+    "validation_key": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Chef organization validation key."
+      }
+    },
+    "client_rb": {
+      "type": "string",
+      "metadata": {
+        "description": "JSON escaped string value of the client.rb file to pass"
+      }
+    }
+  },
+  "variables": {
+    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
+    "subnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('subnetName'))]",
+    "publisher": "Chef.Bootstrap.WindowsAzure"
+},
+  "resources": [
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Resources/deployments",
+      "name": "[parameters('newStorageAccountName')]",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('templateBaseUrl'),variables('resourceStorageAccount'))]",
+          "contentVersion": "1.0.0.0"
+        },
+      },
+      "parameters": {
+        "newStorageAccountName": { "value": "[parameters('storageblobname')]" },
+        "location": { "value": "[resourceGroup().location]" }
+      }
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Resources/deployments",
+      "name": "[parameters('virtualNetworkName')]",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('templateBaseUrl'),variables('resourceVirtualNetwork'))]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "vNetName": { "value": "[parameters('virtualNetworkName')]" },
+          "location": { "value": "[resourceGroup().location]" },
+          "addressPrefix": { "value": "[parameters('addressPrefix')]" },
+          "subnetName": { "value": "[parameters('subnetName')]" },
+          "subnetPrefix": { "value": "[parameters('subnetPrefix')]" },
+        },
+      },
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Resources/deployments",
+      "name": "[parameters('publicIPAddressName')]",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('templateBaseUrl'),variables('resourcePublicIPAddress'))]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "publicIPAddressName": { "value": "[parameters('publicIPAddressName')]" },
+          "location": { "value": "[resourceGroup().location]" },
+          "publicIPAddressType": { "value": "[parameters('publicIPAddressType')]"},
+          "dnsNameForPublicIP": { "value": "[parameters('dnsNameForPublicIP')]" }
+        }
+      }
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Resources/deployments",
+      "name": "[parameters('nicName')]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/publicIPAddresses/', parameters('publicIPAddressName'))]",
+        "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('templateBaseUrl'),variables('resourceNetworkInterface'))]",
+          "contentVersion": "1.0.0.0"
+        },
+      },
+      "parameters": {
+        "nicName": { "value": "[parameters('nicName')]" },
+        "location": { "value": "[resourceGroup().location]" },
+        "publicIPAddressName": { "value": "[parameters('publicIPAddressName')]"},
+        "virtualNetworkName": { "value": "[parameters('virtualNetworkName')]"},
+        "privateIPAllocationMethod": { "value": "[parameters('privateIPAllocationMethod')]" },
+        "subnetRef": { "value": "[parameters('subnetRef')]"}
+      }
+    },
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Resources/deployments",
+      "name": "[parameters('vmName')]",
+      "dependsOn": [
+        "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
+        "[concat('Microsoft.Network/networkInterfaces/', parameters('nicName'))]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('templateBaseUrl'),parameters('resourceVirtualMachine'))]",
+          "contentVersion": "1.0.0.0"
+        },
+      },
+      "parameters": {
+        "vmName": { "value": "[parameters('vmName')]"},
+        "location": { "value": "[resourceGroup().location]" },
+        "newStorageAccountName": { "value": "[parameters('newStorageAccountName')]"},
+        "nicName": { "value": "[parameters('nicname')]" },
+        "vmSize": { "value": "[parameters('vmSize')]" },
+        "vmName": { "value": "[parameters('vmName')]" },
+        "adminUsername": { "value": "[parameters('adminUsername')]" },
+        "adminPassword": { "value": "[parameters('adminPassword')]" },
+        "imagePublisher": { "value": "[parameters('imagePublisher')]" },
+        "imageOffer": { "value": "[parameters('imageOffer')]" },
+        "WindowsServerEdition": { "value": "[parameters('WindowsServerEdition')]" },
+        "vmStorageAccountContainerName": { "value": "[parameters('vmStorageAccountContainerName')]" },
+        "OSDiskName": { "value": "[parameters('OSDiskName')]" }
+      }
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Resources/deployments",
+      "name": "[concat(parameters('vmName'),'/', 'chefExtension')]",
+      "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('templateBaseUrl'),variables('resourceVMExtensionChef'))]",
+          "contentVersion": "1.0.0.0"
+        },
+      },
+      "parameters": {
+        "vmName": { "value": "[parameters('vmName')]" },
+        "location": { "value": "[resourceGroup().location]" },
+        "publisher": { "value": "[parameters('publisher')]" },
+        "type": { "value": "[parameters('type')]" },
+        "typeHandlerVersion": { "value": "[parameters('typeHandlerVersion')]" },
+        "chef_server_url": { "value": "[parameters('chef_server_url')]" },
+        "validation_client_name": { "value": "[parameters('validation_client_name')]" },
+        "client_rb": { "value": "[parameters('client_rb')]" },
+        "runlist": { "value": "[parameters('runlist')]" },
+        "validation_key": { "value": "[parameters('validation_key')]" }
+      }
+    }
+  ]
+}
