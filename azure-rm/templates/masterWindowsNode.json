@@ -296,7 +296,6 @@
           "newStorageAccountName": { "value": "[parameters('newStorageAccountName')]"},
           "nicName": { "value": "[parameters('nicname')]" },
           "vmSize": { "value": "[parameters('vmSize')]" },
-          "vmName": { "value": "[parameters('vmName')]" },
           "adminUsername": { "value": "[parameters('adminUsername')]" },
           "adminPassword": { "value": "[parameters('adminPassword')]" },
           "imagePublisher": { "value": "[parameters('imagePublisher')]" },
