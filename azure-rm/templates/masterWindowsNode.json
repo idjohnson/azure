@@ -260,10 +260,6 @@
       "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Resources/deployments",
       "name": "[parameters('nicName')]",
-      "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', parameters('publicIPAddressName'))]",
-        "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]"
-      ],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
