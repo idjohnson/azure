@@ -28,10 +28,6 @@
         "type": "Microsoft.Network/networkInterfaces",
         "name": "[parameters('nicName')]",
         "location": "[parameters('location')]",
-        "dependsOn": [
-          "[concat('Microsoft.Network/publicIPAddresses/', parameters('publicIPAddressName'))]",
-          "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]"
-        ],
         "properties": {
           "ipConfigurations": [
             {
