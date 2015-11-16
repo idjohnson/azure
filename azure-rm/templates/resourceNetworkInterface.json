@@ -16,10 +16,11 @@
       },
       "privateIPAllocationMethod": {
         "type": "string"
-      },
-      "subnetRef": {
-        "type": "string"
       }
+    },
+    "variables": {
+      "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
+      "subnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('subnetName'))]"
     },
     "resources": [
       {

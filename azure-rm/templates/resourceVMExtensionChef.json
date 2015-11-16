@@ -9,13 +9,16 @@
         "type": "string"
       },
       "publisher": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "Chef.Bootstrap.WindowsAzure"
       },
       "type": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "ChefClient"
       },
       "typeHandlerVersion": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "1210.12"
       },
       "chef_server_url": {
         "type": "string"
@@ -38,7 +41,6 @@
         "apiVersion": "2015-05-01-preview",
         "type": "Microsoft.Compute/virtualMachines/extensions",
         "name": "[concat(parameters('vmName'),'/', 'chefExtension')]",
-
         "location": "[parameters('location')]",
         "dependsOn": [
           "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"

@@ -68,24 +68,28 @@
     },
     "location": {
       "type": "string",
+      "defaultValue": "West US",
       "metadata": {
         "description": "Azure region"
       }
     },
     "imagePublisher": {
       "type": "string",
+      "defaultValue": "MicrosoftWindowsServer",
       "metadata": {
         "description": "Publisher of the operating system image"
       }
     },
     "imageOffer": {
       "type": "string",
+      "defaultValue": "WindowsServer",
       "metadata": {
         "description": "Type of operating system image."
       }
     },
     "WindowsServerEdition": {
       "type": "string",
+      "defaultValue": "2012-R2-Datacenter",
       "metadata": {
         "description": "Specific edition of Windows Server."
       }
@@ -122,6 +126,11 @@
     },
     "storageAccountType": {
       "type": "string",
+      "allowedValues": [
+        "Standard_LRS",
+        "Standard_GRS"
+      ],
+      "defaultValue": "Standard_LRS",
       "metadata": {
         "description": "Storage account replication type."
       }
@@ -193,11 +202,6 @@
       }
     }
   },
-  "variables": {
-    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
-    "subnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('subnetName'))]",
-    "publisher": "Chef.Bootstrap.WindowsAzure"
-},
   "resources": [
     {
       "apiVersion": "2015-05-01-preview",
@@ -271,8 +275,7 @@
           "location": { "value": "[resourceGroup().location]" },
           "publicIPAddressName": { "value": "[parameters('publicIPAddressName')]"},
           "virtualNetworkName": { "value": "[parameters('virtualNetworkName')]"},
-          "privateIPAllocationMethod": { "value": "[parameters('privateIPAllocationMethod')]" },
-          "subnetRef": { "value": "[parameters('subnetRef')]"}
+          "privateIPAllocationMethod": { "value": "[parameters('privateIPAllocationMethod')]" }
         }
       }
     },
