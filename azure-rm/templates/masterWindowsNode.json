@@ -159,18 +159,6 @@
         "description": "Instance size of Azure virtual machine."
       }
     },
-    "type": {
-      "type": "string",
-      "metadata": {
-        "description": "Type of Chef VM Extension."
-      }
-    },
-    "typeHandlerVersion": {
-      "type": "string",
-      "metadata": {
-        "description": "Version of Chef VM Extension."
-      }
-    },
     "chef_server_url": {
       "type": "string",
       "metadata": {
@@ -325,9 +313,6 @@
         "parameters": {
           "vmName": { "value": "[parameters('vmName')]" },
           "location": { "value": "[resourceGroup().location]" },
-          "publisher": { "value": "[parameters('publisher')]" },
-          "type": { "value": "[parameters('type')]" },
-          "typeHandlerVersion": { "value": "[parameters('typeHandlerVersion')]" },
           "chef_server_url": { "value": "[parameters('chef_server_url')]" },
           "validation_client_name": { "value": "[parameters('validation_client_name')]" },
           "client_rb": { "value": "[parameters('client_rb')]" },
