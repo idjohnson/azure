@@ -221,7 +221,7 @@
     },
     {
       "apiVersion": "2015-05-01-preview",
-      "type": "Microsoft.Resources/deployments",
+      "type": "Microsoft.Network/virtualNetworks",
       "name": "[parameters('virtualNetworkName')]",
       "properties": {
         "mode": "Incremental",
@@ -240,7 +240,7 @@
     },
     {
       "apiVersion": "2015-05-01-preview",
-      "type": "Microsoft.Resources/deployments",
+      "type": "Microsoft.Network/publicIPAddresses",
       "name": "[parameters('publicIPAddressName')]",
       "properties": {
         "mode": "Incremental",
@@ -261,8 +261,8 @@
       "type": "Microsoft.Resources/deployments",
       "name": "[parameters('nicName')]",
       "dependsOn": [
-        "[concat('Microsoft.Resources/deployments/', parameters('publicIPAddressName'))]",
-        "[concat('Microsoft.Resources/deployments/', parameters('virtualNetworkName'))]"
+        "[concat('Microsoft.Network/publicIPAddresses/', parameters('publicIPAddressName'))]",
+        "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]"
       ],
       "properties": {
         "mode": "Incremental",
