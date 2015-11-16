@@ -188,6 +188,18 @@
       "metadata": {
         "description": "JSON escaped string value of the client.rb file to pass"
       }
+    },
+    "type": {
+      "type": "string",
+      "metadata": {
+        "description": "VM Extension type"
+      }
+    },
+    "typeHandlerVersion": {
+      "type": "string",
+      "metadata": {
+        "description": "Chef VM Extension version"
+      }
     }
   },
   "resources": [
