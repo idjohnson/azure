@@ -27,10 +27,6 @@
         "apiVersion": "2015-05-01-preview",
         "type": "Microsoft.Network/networkInterfaces",
         "name": "[parameters('nicName')]",
-        "dependsOn": [
-          "[concat('Microsoft.Network/publicIPAddresses/', parameters('publicIPAddressName'))]",
-          "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]"
-        ],
         "location": "[parameters('location')]",
         "properties": {
           "ipConfigurations": [

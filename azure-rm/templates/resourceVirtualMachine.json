@@ -81,10 +81,6 @@
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[parameters('vmName')]",
       "location": "[parameters('location')]",
-      "dependsOn": [
-        "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'), 'resourceStorageAccount.json')]",
-        "[concat('Microsoft.Network/networkInterfaces/', parameters('nicName'), 'resourceNetworkInterface.json')]"
-      ],
       "properties": {
         "hardwareProfile": {
           "vmSize": "[parameters('vmSize')]"
