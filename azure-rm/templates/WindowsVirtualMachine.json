@@ -186,6 +186,9 @@
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[parameters('publicIPAddressName')]",
       "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments/', parameters('virtualNetworkName'))]"
+      ],
       "tags": {
         "displayName": "PublicIPAddress"
       },
