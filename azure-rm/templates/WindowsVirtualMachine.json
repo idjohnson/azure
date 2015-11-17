@@ -206,7 +206,7 @@
       },
       "dependsOn": [
         "[concat('Microsoft.Network/publicIPAddresses/', parameters('publicIPAddressName'))]",
-        "[concat('Microsoft.Resources/deployments/', parameters('virtualNetworkName'))]"
+        "[resourceId('Microsoft.Resources/deployments/', parameters('virtualNetworkName'))]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -234,7 +234,7 @@
         "displayName": "VirtualMachine"
       },
       "dependsOn": [
-        "[concat('Microsoft.Storage/storageAccounts/', variables('vhdStorageName'))]",
+        "[resourceId('Microsoft.Resources/deployments/', variables('vhdStorageName'))]",
         "[concat('Microsoft.Network/networkInterfaces/', parameters('nicName'))]"
       ],
       "properties": {
