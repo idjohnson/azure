@@ -150,17 +150,17 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[concat(parameters('templateBaseURL'), '/', parameters('storageTemplateFileName'))]",
-          "contentVersion": "1.0.0.0"
+          "contentVersion": "1.0.0.0",
+          "uri": "[concat(parameters('templateBaseURL'), '/', parameters('storageTemplateFileName'))]"
         },
         "parameters": {
-          "newStorageAccount": { "value": "[parameters('newStorageAccount')]" },
-          "location": { "value": "[parameters('location')]" }
+          "location": { "value": "[parameters('location')]" },
+          "newStorageAccount": { "value": "[parameters('newStorageAccount')]" }
         }
       }
     },
     {
-      "name": "vnet",
+      "name": "[parameters('virtualNetworkName')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "tags": {
@@ -169,15 +169,15 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[concat(parameters('templateBaseURL'), '/', parameters('vnetTemplateFileName'))]",
-          "contentVersion": "1.0.0.0"
+          "contentVersion": "1.0.0.0",
+          "uri": "[concat(parameters('templateBaseURL'), '/', parameters('vnetTemplateFileName'))]"
         },
         "parameters": {
-          "vNetName": { "value": "[parameters('virtualNetworkName')]" },
-          "location": { "value": "[resourceGroup().location]" },
           "addressPrefix": { "value": "[parameters('addressPrefix')]" },
+          "location": { "value": "[resourceGroup().location]" },
           "subnetName": { "value": "[parameters('subnetName')]" },
-          "subnetPrefix": { "value": "[parameters('subnetPrefix')]" }
+          "subnetPrefix": { "value": "[parameters('subnetPrefix')]" },
+          "vNetName": { "value": "[parameters('virtualNetworkName')]" }
         }
       }
     },
