@@ -8,14 +8,20 @@
         "description": "Unique DNS Name for the Storage Account where the Virtual Machine's disks will be placed."
       }
     },
+    "instanceCount": {
+      "type": "int",
+      "defaultValue": 2
+    },
     "virtualNetworkName": {
       "type": "string",
+      "defaultValue": "chef-lab-vnet",
       "metadata": {
-        "description": "Existing virtual network."
+        "description": "Virtual network name."
       }
     },
     "adminUsername": {
       "type": "string",
+      "defaultValue": "chef",
       "metadata": {
         "description": "User name for the Virtual Machine."
       }
@@ -26,49 +32,40 @@
         "description": "Password for the Virtual Machine."
       }
     },
-    "dnsNameForPublicIP": {
+    "dnsNameForPublicIPPrefix": {
       "type": "string",
       "metadata": {
         "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
       }
     },
-    "vmName": {
+    "vmNamePrefix": {
       "type": "string",
       "metadata": {
         "description": "Name of the virtual machine"
       }
     },
-    "location": {
-      "type": "string",
-      "metadata": {
-        "description": "Azure region"
-      }
-    },
     "imagePublisher": {
       "type": "string",
+      "defaultValue": "MicrosoftWindowsServer",
       "metadata": {
         "description": "Publisher of the operating system image"
       }
     },
     "imageOffer": {
       "type": "string",
+      "defaultValue": "WindowsServer",
       "metadata": {
         "description": "Type of operating system image."
       }
     },
     "WindowsServerEdition": {
       "type": "string",
+      "defaultValue": "2012-R2-Datacenter",
       "metadata": {
         "description": "Specific edition of Windows Server."
       }
     },
-    "OSDiskName": {
-      "type": "string",
-      "metadata": {
-        "description": "Name of the OS disk - unique to storage account."
-      }
-    },
-    "nicName": {
+    "nicNamePrefix": {
       "type": "string",
       "metadata": {
         "description": "Network interface object bound to the virtual machine."
@@ -76,29 +73,33 @@
     },
     "addressPrefix": {
       "type": "string",
+      "defaultValue": "10.0.0.0/16",
       "metadata": {
         "description": "IP range of the virtual network."
       }
     },
     "subnetName": {
       "type": "string",
+      "defaultValue": "subnet",
       "metadata": {
         "description": "Name of the subnet defined by subnetPrefix variable."
       }
     },
     "subnetPrefix": {
       "type": "string",
+      "defaultValue": "10.0.0.0/24",
       "metadata": {
         "description": "IP range of the subnet defined by subnetName."
       }
     },
     "storageAccountType": {
       "type": "string",
+      "defaultValue": "Standard_LRS",
       "metadata": {
         "description": "Storage account replication type."
       }
     },
-    "publicIPAddressName": {
+    "publicIPAddressPrefix": {
       "type": "string",
       "metadata": {
         "description": "Name of the public IP address object bound to nicName"
@@ -106,30 +107,35 @@
     },
     "publicIPAddressType": {
       "type": "string",
+      "defaultValue": "Dynamic",
       "metadata": {
         "description": "Type of public IP - static/dynamic."
       }
     },
     "vmStorageAccountContainerName": {
       "type": "string",
+      "defaultValue": "vhds",
       "metadata": {
         "description": "Storage container to house virtual machine disks."
       }
     },
     "vmSize": {
       "type": "string",
+      "defaultValue": "Standard_D2",
       "metadata": {
         "description": "Instance size of Azure virtual machine."
       }
     },
     "type": {
       "type": "string",
+      "defaultValue": "ChefClient",
       "metadata": {
         "description": "Type of Chef VM Extension."
       }
     },
     "typeHandlerVersion": {
       "type": "string",
+      "defaultValue": "1210.12",
       "metadata": {
         "description": "Version of Chef VM Extension."
       }
@@ -153,7 +159,7 @@
       }
     },
     "validation_key": {
-      "type": "string",
+      "type": "securestring",
       "metadata": {
         "description": "Chef organization validation key."
       }
@@ -175,7 +181,7 @@
       "type": "Microsoft.Storage/storageAccounts",
       "name": "[parameters('newStorageAccountName')]",
       "apiVersion": "2015-05-01-preview",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "properties": {
         "accountType": "[parameters('storageAccountType')]"
       }
@@ -183,12 +189,16 @@
     {
       "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[parameters('publicIPAddressName')]",
-      "location": "[parameters('location')]",
+      "name": "[concat(parameters('publicIPAddressPrefix'),copyIndex())]",
+      "location": "[resourceGroup().location]",
+      "copy": {
+        "name": "publicipcopy",
+        "count": "[parameters('instanceCount')]"
+      },
       "properties": {
         "publicIPAllocationMethod": "[parameters('publicIPAddressType')]",
         "dnsSettings": {
-          "domainNameLabel": "[parameters('dnsNameForPublicIP')]"
+          "domainNameLabel": "[concat(parameters('dnsNameForPublicIPPrefix'), '-', copyIndex())]"
         }
       }
     },
@@ -196,7 +206,7 @@
       "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[parameters('virtualNetworkName')]",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
@@ -216,10 +226,14 @@
     {
       "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[parameters('nicName')]",
-      "location": "[parameters('location')]",
+      "name": "[concat(parameters('nicNamePrefix'), copyIndex())]",
+      "location": "[resourceGroup().location]",
+      "copy": {
+        "name": "niccopy",
+        "count": "[parameters('instanceCount')]"
+      },
       "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', parameters('publicIPAddressName'))]",
+        "[concat('Microsoft.Network/publicIPAddresses/', parameters('publicIPAddressPrefix'), copyIndex())]",
         "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]"
       ],
       "properties": {
@@ -229,7 +243,7 @@
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIPAddressName'))]"
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(parameters('publicIPAddressPrefix'), copyIndex()))]"
               },
               "subnet": {
                 "id": "[variables('subnetRef')]"
@@ -242,18 +256,22 @@
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[parameters('vmName')]",
-      "location": "[parameters('location')]",
+      "name": "[concat(parameters('vmNamePrefix'), '-', copyIndex())]",
+      "location": "[resourceGroup().location]",
+      "copy": {
+        "name": "vmcopy",
+        "count": "[parameters('instanceCount')]"
+      },
       "dependsOn": [
         "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
-        "[concat('Microsoft.Network/networkInterfaces/', parameters('nicName'))]"
+        "[concat('Microsoft.Network/networkInterfaces/', parameters('nicNamePrefix'), copyIndex())]"
       ],
       "properties": {
         "hardwareProfile": {
           "vmSize": "[parameters('vmSize')]"
         },
         "osProfile": {
-          "computername": "[parameters('vmName')]",
+          "computername": "[concat(parameters('vmNamePrefix'), '-', copyIndex())]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
@@ -267,7 +285,7 @@
           "osDisk": {
             "name": "osdisk",
             "vhd": {
-              "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/',parameters('vmStorageAccountContainerName'),'/',parameters('OSDiskName'),'.vhd')]"
+              "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/',parameters('vmStorageAccountContainerName'),'/',parameters('vmNamePrefix'),copyIndex(),'.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
@@ -276,7 +294,7 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces',parameters('nicName'))]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('nicNamePrefix'), copyIndex()))]"
             }
           ]
         },
@@ -290,11 +308,15 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(parameters('vmName'),'/', 'chefExtension')]",
+      "name": "[concat(parameters('vmNamePrefix'),'-',copyIndex(),'/','chefExtension')]",
       "apiVersion": "2015-05-01-preview",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
+      "copy": {
+        "name": "vmcopy",
+        "count": "[parameters('instanceCount')]"
+      },
       "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
+        "[concat('Microsoft.Compute/virtualMachines/', parameters('vmNamePrefix'),'-',copyIndex())]"
       ],
       "properties": {
         "publisher": "[variables('publisher')]",
@@ -303,7 +325,7 @@
         "settings": {
           "bootstrap_options":
           {
-            "chef_node_name" : "[parameters('vmName')]",
+            "chef_node_name" : "[concat(parameters('vmNamePrefix'),'-',copyIndex())]",
             "chef_server_url" : "[parameters('chef_server_url')]",
             "validation_client_name" : "[parameters('validation_client_name')]",
           },

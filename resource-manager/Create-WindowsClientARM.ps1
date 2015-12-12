@@ -1,19 +1,15 @@
 ### Define variables
-$GroupName = 'chef-demo'
-$DeploymentName = 'windows-node-deployment'
-$AzureLocation = 'West US'
-$templateBaseUrl = 'https://raw.githubusercontent.com/jamesbannan/azure/master/azure-rm/templates'
-$resourceTemplate = 'resourceVirtualMachine.json'
-$templateUrl = $templateBaseUrl + '/' + $resourceTemplate
+$GroupName = 'pluralsight-lab'
+$DeploymentName = 'windows-chef-node'
+$AzureLocation = 'Australia Southeast'
 $password = Read-Host -AsSecureString
-$AzureResourceGroup = Get-AzureRmResourceGroup -Name $GroupName
 
-$ChefValidationCertificatePath = $env:USERPROFILE + '\Documents\Git\chef-demo\.chef'
-$ChefValidationCertificateName = 'chefdemo-validator.pem'
+$ChefValidationCertificatePath = $env:USERPROFILE + '\Documents\Git\pluralsight-cookbooks\.chef'
+$ChefValidationCertificateName = 'pluralsight-validator.pem'
 $ChefValidationCertificate = $ChefValidationCertificatePath + '\' + $ChefValidationCertificateName
-$ChefValidationCertificateKey = Get-Content $ChefValidationCertificate -Raw
+$ChefValidationCertificateKey = Get-Content $ChefValidationCertificate -Raw | ConvertTo-SecureString -AsPlainText -Force
 
-$ClientRbPath = $env:USERPROFILE + '\Documents\Git\chef-demo\.chef'
+$ClientRbPath = $env:USERPROFILE + '\Documents\Git\pluralsight-cookbooks\.chef'
 $ClientRb = $ClientRbPath + '\' + 'client.rb'
 $ClientRbProperties = Get-Content $ClientRb -Raw
 
@@ -21,6 +17,11 @@ $additionalParameters = New-Object -TypeName Hashtable
 $additionalParameters['adminPassword'] = $password
 $additionalParameters['validation_key'] = $ChefValidationCertificateKey
 $additionalParameters['client_rb'] = $ClientRbProperties
+
+$AzureResourceGroup = New-AzureRmResourceGroup `
+    -Name $GroupName `
+    -Location $AzureLocation `
+    -Verbose -Force
 
 New-AzureRmResourceGroupDeployment `
     -Name $DeploymentName `
