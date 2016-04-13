@@ -15,6 +15,12 @@ Configuration IISServer {
             DependsOn = '[WindowsFeature]WebServer'
         }
 
+        WindowsFeature WebMgmtConsole {
+            Name = 'Web-Mgmt-Console'
+            Ensure = 'Present'
+            DependsOn = '[WindowsFeature]WebServer'
+        }
+
         }
 
     }
